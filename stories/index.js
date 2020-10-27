@@ -181,9 +181,14 @@ storiesOf("Button", module)
         onCancel={action("onCancel")}
       />
     )
-    .add("Status", () => 
+    .add("Deleting", () => 
       <Status
         message="Deleting"
+      />
+    )
+    .add("Saving", () => 
+      <Status
+        message="Saving"
       />
     )
     .add("Error", () => 
