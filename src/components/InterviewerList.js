@@ -5,14 +5,14 @@ import InterviewerListItem from "./InterviewerListItem";
 const classNames = require('classnames');
 
 const mapInterviewers = function (props) {
-  const interviewers = props.interviewers.map(interviewer => {
+  const interviewers = props.interviewers.map(value => {
     return (
       <InterviewerListItem 
-      key={interviewer.id}
-      name={interviewer.name}
-      avatar={interviewer.avatar}
-      selected={interviewer.id === props.interviewer}
-      setInterviewer={(event) => props.setInterviewer(interviewer.id)}
+      key={value.id}
+      name={value.name}
+      avatar={value.avatar}
+      selected={value.id === props.interviewer}
+      setInterviewer={(event) => props.setInterviewer(value.id)}
       />
     );
   });
