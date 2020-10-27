@@ -1,6 +1,10 @@
 import React from "react";
 
-import "Appointment/styles.scss";
+//css
+import "components/Appointment/styles.scss";
+
+//js
+import "components/Appointment/Header"
 
 export default function Appointment(props) {
 
