@@ -4,28 +4,24 @@ import "components/InterviewerList.scss";
 import InterviewerListItem from "./InterviewerListItem";
 const classNames = require('classnames');
 
-const mapInterviewers = function (props) {
-  const interviewers = props.interviewers.map(value => {
+export default function InterviewList(props) {
+
+  const interviewers = props.interviewers.map(interviewer => {
     return (
       <InterviewerListItem 
-      key={value.id}
-      name={value.name}
-      avatar={value.avatar}
-      selected={value.id === props.interviewer}
-      setInterviewer={(event) => props.setInterviewer(value.id)}
+      key={interviewer.id}
+      name={interviewer.name}
+      avatar={interviewer.avatar}
+      selected={interviewer.id === props.value}
+      setInterviewer={(event) => props.onChange(interviewer.id)}
       />
     );
   });
-  return interviewers;
-}
-
-
-export default function InterviewList(props) {
 
   return (
     <section className="interviewers">
       <h4 className="interviewers__header text--light">Interviewer</h4>
-      <ul className="interviewers__list">{mapInterviewers(props)}</ul>
+      <ul className="interviewers__list">{interviewers}</ul>
     </section>
   );
 }
