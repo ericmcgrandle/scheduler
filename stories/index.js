@@ -19,6 +19,7 @@ import Empty from "components/Appointment/Empty";
 import Show from "components/Appointment/Show";
 import Confirm from "components/Appointment/Confirm";
 import Status from "components/Appointment/Status";
+import Err from "components/Appointment/Error";
 
 //BUTTON
 storiesOf("Button", module)
@@ -183,5 +184,11 @@ storiesOf("Button", module)
     .add("Status", () => 
       <Status
         message="Deleting"
+      />
+    )
+    .add("Error", () => 
+      <Err
+        message="Could not delete appointment."
+        onClose={action("onClose")}
       />
     )
