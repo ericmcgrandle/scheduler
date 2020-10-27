@@ -1,6 +1,6 @@
 import React from "react";
 
-export default function Error(props) {
+export default function Err(props) {
 
   return (
     <main className="appointment__card appointment__card--error">
