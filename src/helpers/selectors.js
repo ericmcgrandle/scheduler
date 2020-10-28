@@ -15,4 +15,35 @@ export function getAppointmentsForDay(state, day) {
     }
   }
   return result;
-}
+};
+
+
+export function getInterview(state, interview) {
+  
+  if (!interview) {
+    return null;
+  }
+  
+  const id = interview.interviewer;
+  let student = "";
+  let interviewObj = {};
+
+  for (let data in state.appointments) {
+    if (state.appointments[data].interview) {
+      if (state.appointments[data].interview.interviewer === id) {
+        student = state.appointments[data].interview.student;
+      }
+    }
+  }
+
+  for (let data in state.interviewers) {
+    if (state.interviewers[data].id === id) {
+      interviewObj = state.interviewers[data];
+    }
+  }
+
+  return { 
+    student,
+    interviewer: interviewObj
+  };
+};
