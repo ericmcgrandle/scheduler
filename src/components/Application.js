@@ -6,6 +6,7 @@ import DayList from "components/DayList"
 import { Confirm, Empty, Err, Form, Header, Show, Status } from "components/Appointment"
 import Appointment from "components/Appointment/index";
 import { getAppointmentsForDay } from "helpers/selectors";
+import useVisualMode from "hooks/useVisualMode";
 
 
 export default function Application(props) {
@@ -36,12 +37,9 @@ export default function Application(props) {
     });
   }, []);
 
-  console.log('state', state.interviewers);
-
-  const dailyAppointments = getAppointmentsForDay(state, state.day)
-  
 
   //map appointments
+  const dailyAppointments = getAppointmentsForDay(state, state.day)
   const mapAppointment = dailyAppointments.map(appointment => {
     // const interview = getInterview(state, appointment.interview);
 
