@@ -6,24 +6,19 @@ export default function useVisualMode(initial) {
 
   function transition(newMode, skip) {
     setMode(newMode);
-
     if (skip) {
-      const arr = [...history];
-      arr.pop();
-      setHistory([...arr, mode]);  
-    } else {
-      setHistory([...history, newMode]);
+      history.pop();
     }
+    setHistory([...history, newMode]);
+    
   }
 
   function back() {
     if (history.length === 1) {
       return;
     }
-    const arr = [...history];
-    arr.pop();
-    setHistory(arr);
-    setMode(arr[arr.length-1]);
+    history.pop();
+    setMode(history[history.length-1]);
   }
 
   return { mode, transition, back };
