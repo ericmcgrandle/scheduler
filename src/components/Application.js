@@ -53,7 +53,6 @@ export default function Application(props) {
           appointments
         });
       })
-      .catch((err) => console.log('error', err));
     }
 
     function deleteAppointment(id) {
@@ -62,7 +61,6 @@ export default function Application(props) {
         ...state.appointments[id],
         interview: null
       };
-      console.log('appointment', appointment);
       const appointments = {
         ...state.appointments,
         [id]: appointment
@@ -76,7 +74,6 @@ export default function Application(props) {
           appointments
         });
       })
-      .catch((err) => console.log('error', err));
     };
 
 
