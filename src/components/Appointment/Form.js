@@ -4,6 +4,9 @@ import InterviewerList from "components/InterviewerList";
 import Button from "components/Button";
 
 export default function Form(props) {
+  
+  const [name, setName] = useState(props.name || "");
+  const [interviewer, setInterviewer] = useState(props.interviewer || null);
 
   const reset = () => {
     setName("");
@@ -19,8 +22,7 @@ export default function Form(props) {
     props.onSave(name, interviewer);
   }
 
-  const [name, setName] = useState(props.name || "");
-  const [interviewer, setInterviewer] = useState(props.interviewer || null);
+
 
   return (
     <main className="appointment__card appointment__card--create">
