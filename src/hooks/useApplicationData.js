@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import getIndex from 'helpers/updateSpots'
 
 export default function useApplicationData() {
 
@@ -9,6 +10,7 @@ export default function useApplicationData() {
     appointments: {},
     interviewers: {}
   });
+
 
   const setDay = day => setState({ ...state, day });
 
@@ -27,6 +29,7 @@ export default function useApplicationData() {
   }, []);
 
   function bookInterview(id, interview) {
+
     //get local state
     const appointment = {
       ...state.appointments[id],
@@ -40,9 +43,15 @@ export default function useApplicationData() {
     //updating state data
     return axios.put(`/api/appointments/${id}`, { interview })
       .then((res) => {
+        const index = getIndex(state);
+        const spots = (state.days[index].spots - 1);
+        const arr = [...state.days];
+        arr[index].spots = spots;
+
         setState({
           ...state,
-          appointments
+          appointments,
+          days: arr
         });
       })
     }
@@ -61,12 +70,18 @@ export default function useApplicationData() {
       //updating state data
       return axios.delete(`/api/appointments/${id}`)
       .then((res) => {
+        const index = getIndex(state);
+        const spots = (state.days[index].spots + 1);
+        const arr = [...state.days];
+        arr[index].spots = spots;
+
         setState({
           ...state,
-          appointments
+          appointments,
+          days: arr
         });
       })
     };
 
-    return {state, setDay, bookInterview, deleteAppointment}
+    return {state, setDay, bookInterview, deleteAppointment }
 }
