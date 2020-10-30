@@ -3,6 +3,7 @@ export function getAppointmentsForDay(state, day) {
   const result = [];
 
   const filtered = state.days.filter((elem) => elem.name === day);
+  // const filtered = state.SET_APPLICATION_DATA.days.filter((elem) => elem.name === day);
   //if empty
   if (filtered.length === 0) {
     return result;
@@ -21,6 +22,7 @@ export function getInterviewersForDay(state, day) {
   const result = [];
 
   const filtered = state.days.filter((elem) => elem.name === day);
+  // const filtered = state.SET_APPLICATION_DATA.days.filter((elem) => elem.name === day);
   //if empty
   if (filtered.length === 0) {
     return result;

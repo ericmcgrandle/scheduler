@@ -15,6 +15,8 @@ export default function Application(props) {
     deleteAppointment,
   } = useApplicationData();
 
+  console.log('state', state);
+
   //helper functions
   const dailyAppointments = getAppointmentsForDay(state, state.day);
   const dailyInterviewers = getInterviewersForDay(state, state.day);
@@ -57,7 +59,7 @@ export default function Application(props) {
       </section>
       <section className="schedule">
         {mapAppointment}
-        <Appointment key="last" time="6pm" />
+        <Appointment key="last" time="5pm" />
       </section>
     </main>
   );
