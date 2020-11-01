@@ -1,6 +1,6 @@
 import { useEffect, useReducer } from 'react';
 import axios from 'axios';
-import getIndex from 'helpers/updateSpots'
+import getIndex from "helpers/updateSpots";
 
 export default function useApplicationData() {
 
@@ -18,11 +18,13 @@ export default function useApplicationData() {
   function reducer(state, action) {
 
     switch (action.type) {
+
       case SET_DAY:
         return {
           ...state,
           day: action.value
         }
+
       case SET_APPLICATION_DATA:
         return { 
           ...state,
@@ -30,12 +32,19 @@ export default function useApplicationData() {
           appointments: action.value.appointments,
           interviewers: action.value.interviewers,
           }
-      case SET_INTERVIEW: {
 
+      case SET_INTERVIEW: {
+        console.log('running set_interview');
+
+        const index = getIndex(state);
+        const spots = state.days[index].spots - 1;
+        const arr = [...state.days];
+        arr[index].spots = spots;
+        
          //get local state
         const appointment = {
           ...state.appointments[action.value.id],
-          interview: { ...action.value.interview }
+          interview: action.value.interview
         };
         const appointments = {
           ...state.appointments,
@@ -45,8 +54,10 @@ export default function useApplicationData() {
         return {
           ...state,
           appointments: appointments,
+          days: arr
         }
       }
+        
       default:
         throw new Error(
           `Tried to reduce with unsupported action type: ${action.type}`
@@ -109,6 +120,14 @@ export default function useApplicationData() {
     //updating state data
     return axios.put(`/api/appointments/${id}`, { interview })
       .then((res) => {
+
+        //THIS CODE DOES NOT WORK FOR BOTH BROWSERS
+        // const index = getIndex(state);
+        // const spots = state.days[index].spots - 1;
+        // const arr = [...state.days];
+        // arr[index].spots = spots;
+        // dispatch({ type: UPDATE_DAYS, value: arr })
+
         //updating local state
         dispatch({ type: SET_INTERVIEW, value: 
           {
@@ -116,20 +135,15 @@ export default function useApplicationData() {
             interview
           } 
         })
+        
       })
     }
 
     function deleteAppointment(id) {
-      
-
       //updating state data
       return axios.delete(`/api/appointments/${id}`)
       .then((res) => {
-        // const index = getIndex(state);
-        // const spots = (state.days[index].spots + 1);
-        // const arr = [...state.days];
-        // arr[index].spots = spots;
-
+        //updating local state
         dispatch({ type: SET_INTERVIEW, value: 
           {
             id,
@@ -141,3 +155,4 @@ export default function useApplicationData() {
 
     return {state, setDay, bookInterview, deleteAppointment }
 }
+

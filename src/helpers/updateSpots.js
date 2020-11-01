@@ -5,6 +5,3 @@ export default function getIndex(state) {
     }
   }
 }
-
-
-
