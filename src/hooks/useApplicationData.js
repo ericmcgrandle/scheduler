@@ -31,10 +31,20 @@ export default function useApplicationData() {
           interviewers: action.value.interviewers,
           }
       case SET_INTERVIEW: {
+
+         //get local state
+        const appointment = {
+          ...state.appointments[action.value.id],
+          interview: { ...action.value.interview }
+        };
+        const appointments = {
+          ...state.appointments,
+          [action.value.id]: appointment
+        };
+
         return {
           ...state,
-          days: action.value.days,
-          appointments: action.value.appointments,
+          appointments: appointments,
         }
       }
       default:
@@ -44,6 +54,34 @@ export default function useApplicationData() {
     }
   }
 
+
+  useEffect(() => {
+    const webSocket = new WebSocket(process.env.REACT_APP_WEBSOCKET_URL);
+    webSocket.onopen = function(event) {
+      
+      //Recieve message from server
+      webSocket.onmessage = function(event) {
+        //serialize data
+        const data = JSON.parse(event.data);
+        const id = data.id;
+        const interview = data.interview;
+
+        //Check if trying to update interview
+        if (data.type === "SET_INTERVIEW") {
+          dispatch({ type: SET_INTERVIEW, value: 
+            {
+              id,
+              interview
+            } 
+          })
+        } else {
+          console.log('message recieved', data);
+        }
+      }
+    }
+  }, []);
+
+  
   const setDay = day => dispatch({ type: SET_DAY, value: day })
 
    //get days from api
@@ -67,59 +105,35 @@ export default function useApplicationData() {
   }, []);
 
   function bookInterview(id, interview) {
-
-    //get local state
-    const appointment = {
-      ...state.appointments[id],
-      interview: { ...interview }
-    };
-    const appointments = {
-      ...state.appointments,
-      [id]: appointment
-    };
     
     //updating state data
     return axios.put(`/api/appointments/${id}`, { interview })
       .then((res) => {
-        const index = getIndex(state);
-        const spots = (state.days[index].spots - 1);
-        const arr = [...state.days];
-        arr[index].spots = spots;
-
+        //updating local state
         dispatch({ type: SET_INTERVIEW, value: 
           {
-            ...state,
-            appointments: appointments,
-            days: arr
+            id,
+            interview
           } 
         })
       })
     }
 
     function deleteAppointment(id) {
-      //get local state data
-      const appointment = {
-        ...state.appointments[id],
-        interview: null
-      };
-      const appointments = {
-        ...state.appointments,
-        [id]: appointment
-      };
+      
 
       //updating state data
       return axios.delete(`/api/appointments/${id}`)
       .then((res) => {
-        const index = getIndex(state);
-        const spots = (state.days[index].spots + 1);
-        const arr = [...state.days];
-        arr[index].spots = spots;
+        // const index = getIndex(state);
+        // const spots = (state.days[index].spots + 1);
+        // const arr = [...state.days];
+        // arr[index].spots = spots;
 
         dispatch({ type: SET_INTERVIEW, value: 
           {
-            ...state,
-            appointments: appointments,
-            days: arr
+            id,
+            interview: null
           } 
         })
       })
