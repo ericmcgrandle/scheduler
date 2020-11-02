@@ -1,5 +1,4 @@
 import React from "react";
-
 import DayListItem from "components/DayListItem"
 
 const mapDays = function (props) {
@@ -15,6 +14,7 @@ const mapDays = function (props) {
   });
   return days;
 }
+
 
 export default function DayList(props) {
   return (
