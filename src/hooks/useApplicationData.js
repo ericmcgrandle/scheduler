@@ -6,7 +6,6 @@ const SET_DAY = "SET_DAY";
 const SET_APPLICATION_DATA = "SET_APPLICATION_DATA";
 const SET_INTERVIEW = "SET_INTERVIEW";
 
-
 function reducer(state, action) {
   switch (action.type) {
     case SET_DAY:
@@ -21,11 +20,10 @@ function reducer(state, action) {
         appointments: action.value.appointments,
         interviewers: action.value.interviewers,
         }
-
     case SET_INTERVIEW: {
-
+      //update spots remaining
       const newDaysArray = updateDaysArray(action.value.interview, action.value.id, state);
-      
+
        //get local state
       const appointment = {
         ...state.appointments[action.value.id],
@@ -42,7 +40,6 @@ function reducer(state, action) {
         days: newDaysArray
       }
     }
-      
     default:
       throw new Error(
         `Tried to reduce with unsupported action type: ${action.type}`
@@ -62,25 +59,18 @@ export default function useApplicationData() {
   useEffect(() => {
     const webSocket = new WebSocket(process.env.REACT_APP_WEBSOCKET_URL);
     webSocket.onopen = function(event) {
-      
-      //Recieve message from server
-      webSocket.onmessage = function(event) {
+        webSocket.onmessage = function(event) {
         //serialize data
         const data = JSON.parse(event.data);
-        const id = data.id;
-        const interview = data.interview;
 
-        //Check if trying to update interview
         if (data.type === "SET_INTERVIEW") {
           dispatch({ type: SET_INTERVIEW, value: 
             {
-              id,
-              interview
+              id: data.id,
+              interview: data.interview
             } 
           })
-        } else {
-          console.log('message recieved', data);
-        }
+        } 
       }
     }
   }, []);
@@ -88,7 +78,7 @@ export default function useApplicationData() {
   
   const setDay = day => dispatch({ type: SET_DAY, value: day })
 
-   //get days from api
+   //update state from server
    useEffect(() => {
     Promise.all([
       axios.get('/api/days'),
@@ -109,7 +99,6 @@ export default function useApplicationData() {
   }, []);
 
   function bookInterview(id, interview) {
-    //updating state data
     return axios.put(`/api/appointments/${id}`, { interview })
       .catch((err) => {
         console.log('error', err);
@@ -117,7 +106,6 @@ export default function useApplicationData() {
     }
 
     function deleteAppointment(id) {
-      //updating state data
       return axios.delete(`/api/appointments/${id}`)
       .catch((err) => {
         console.log('error', err);
