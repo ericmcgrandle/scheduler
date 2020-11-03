@@ -62,8 +62,8 @@ export default function useApplicationData() {
         webSocket.onmessage = function(event) {
         //serialize data
         const data = JSON.parse(event.data);
-
         if (data.type === "SET_INTERVIEW") {
+          //COMMENT OUT IF NEEDED FOR TEST FILE
           dispatch({ type: SET_INTERVIEW, value: 
             {
               id: data.id,
@@ -100,6 +100,17 @@ export default function useApplicationData() {
 
   function bookInterview(id, interview) {
     return axios.put(`/api/appointments/${id}`, { interview })
+    /*
+      ONLY USE THIS THEN FOR 2ND TEST IN APPLICATION.TEST.JS
+      .then(() => {
+        dispatch({ type: SET_INTERVIEW, value: 
+          {
+            id: id,
+            interview: interview
+          } 
+        })
+      })
+    */
       .catch((err) => {
         console.log('error', err);
       })
@@ -107,6 +118,17 @@ export default function useApplicationData() {
 
     function deleteAppointment(id) {
       return axios.delete(`/api/appointments/${id}`)
+     /*
+      ONLY USE THIS THEN FOR 2ND TEST IN APPLICATION.TEST.JS
+      .then(() => {
+        dispatch({ type: SET_INTERVIEW, value: 
+          {
+            id: id,
+            interview: null
+          } 
+        })
+      })
+    */  
       .catch((err) => {
         console.log('error', err);
       })
