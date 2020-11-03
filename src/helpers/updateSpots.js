@@ -17,10 +17,13 @@ export default function updateDaysArray(interview, appointmentId, state) {
   const stateDaysArrayCopy = [...state.days];
   if (interview && (prevState === null)) {
     //ADDING APPOINTMENT
-    stateDaysArrayCopy[dayIndex].spots = daySpots - 1;
+    const newSpots = daySpots - 1;
+    stateDaysArrayCopy[dayIndex] = {...stateDaysArrayCopy[dayIndex], spots: newSpots};
   } else if (prevState && interview === null) {
     //DELETING APPOINTMENT
-    stateDaysArrayCopy[dayIndex].spots = daySpots + 1;
+    const newSpots = daySpots + 1;
+    stateDaysArrayCopy[dayIndex] = {...stateDaysArrayCopy[dayIndex], spots: newSpots};
+    // stateDaysArrayCopy[dayIndex].spots = daySpots + 1;
   }
 
   return stateDaysArrayCopy
