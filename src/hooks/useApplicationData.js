@@ -21,9 +21,6 @@ function reducer(state, action) {
         interviewers: action.value.interviewers,
         }
     case SET_INTERVIEW: {
-      //update spots remaining
-      const newDaysArray = updateDaysArray(action.value.interview, action.value.id, state);
-
       //get local state
       const appointment = {
         ...state.appointments[action.value.id],
@@ -33,6 +30,9 @@ function reducer(state, action) {
         ...state.appointments,
         [action.value.id]: appointment
       };
+
+      //update spots remaining
+      const newDaysArray = updateDaysArray(state, appointments);
 
       return {
         ...state,
@@ -63,7 +63,6 @@ export default function useApplicationData() {
         //serialize data
         const data = JSON.parse(event.data);
         if (data.type === "SET_INTERVIEW") {
-          //COMMENT OUT IF NEEDED FOR TEST FILE
           dispatch({ type: SET_INTERVIEW, value: 
             {
               id: data.id,

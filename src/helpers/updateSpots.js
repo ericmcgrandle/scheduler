@@ -1,30 +1,19 @@
-export default function updateDaysArray(interview, appointmentId, state) {
+export default function updateDaysArray(state, appointments) {
 
-  const appointment = state.appointments[appointmentId];
-  const prevState = appointment.interview;
-
-  //using appointment id find dayIndex and current spots for day
-  let dayIndex = 0;
-  let daySpots = 0;
-  for (let dayObj of state.days) {
-    if (dayObj.appointments.includes(appointmentId)) {
-      dayIndex = dayObj.id - 1;
-      daySpots = dayObj.spots;
+  const remainingSpots = (day) => {
+    let spots = 0; 
+    for (let id of day.appointments) {
+      if (appointments[id].interview === null) {
+        spots++;
+      }
     }
+    return spots;
   }
 
-  //update the spots using a copy of state.days 
-  const stateDaysArrayCopy = [...state.days];
-  if (interview && (prevState === null)) {
-    //ADDING APPOINTMENT
-    const newSpots = daySpots - 1;
-    stateDaysArrayCopy[dayIndex] = {...stateDaysArrayCopy[dayIndex], spots: newSpots};
-  } else if (prevState && interview === null) {
-    //DELETING APPOINTMENT
-    const newSpots = daySpots + 1;
-    stateDaysArrayCopy[dayIndex] = {...stateDaysArrayCopy[dayIndex], spots: newSpots};
-  }
+  const days = state.days.map(day => {
+    let newSpotsRemaining = remainingSpots(day);
+    return { ...day, spots: newSpotsRemaining }
+  });
 
-  return stateDaysArrayCopy
-
-}
+  return days;
+};
