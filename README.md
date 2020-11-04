@@ -1,5 +1,7 @@
 # Interview Scheduler
 
+Interview Scheduler is a React based app that allows many clients to manage appointments throughout the week. 
+
 ## Application Is Live
 
 To view the live version of the application vist - https://loving-panini-03a52b.netlify.app/ - 
