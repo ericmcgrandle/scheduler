@@ -32,7 +32,7 @@ function reducer(state, action) {
       };
 
       //update spots remaining
-      const newDaysArray = updateDaysArray(state, appointments);
+      const newDaysArray = updateDaysArray(action.value.id, state, appointments);
 
       return {
         ...state,
@@ -106,4 +106,3 @@ export default function useApplicationData() {
 
   return {state, setDay, bookInterview, deleteAppointment }
 }
-
