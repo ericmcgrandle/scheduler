@@ -32,7 +32,7 @@ function reducer(state, action) {
       };
 
       //update spots remaining
-      const newDaysArray = updateDaysArray(action.value.id, state, appointments);
+      const newDaysArray = updateDaysArray(state, appointments);
 
       return {
         ...state,
