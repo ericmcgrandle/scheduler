@@ -23,7 +23,6 @@ export default function updateDaysArray(interview, appointmentId, state) {
     //DELETING APPOINTMENT
     const newSpots = daySpots + 1;
     stateDaysArrayCopy[dayIndex] = {...stateDaysArrayCopy[dayIndex], spots: newSpots};
-    // stateDaysArrayCopy[dayIndex].spots = daySpots + 1;
   }
 
   return stateDaysArrayCopy

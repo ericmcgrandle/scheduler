@@ -32,7 +32,6 @@ export default function Application(props) {
     )
   });
 
-  //main component
   return (
     <main className="layout">
       <section className="sidebar">

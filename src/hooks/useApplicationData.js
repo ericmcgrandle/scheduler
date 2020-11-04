@@ -24,7 +24,7 @@ function reducer(state, action) {
       //update spots remaining
       const newDaysArray = updateDaysArray(action.value.interview, action.value.id, state);
 
-       //get local state
+      //get local state
       const appointment = {
         ...state.appointments[action.value.id],
         interview: action.value.interview
@@ -75,7 +75,6 @@ export default function useApplicationData() {
     }
   }, []);
 
-  
   const setDay = day => dispatch({ type: SET_DAY, value: day })
 
    //update state from server
@@ -100,33 +99,12 @@ export default function useApplicationData() {
 
   function bookInterview(id, interview) {
     return axios.put(`/api/appointments/${id}`, { interview })
-    /*
-      // ONLY USE THIS THEN FOR 2ND TEST IN APPLICATION.TEST.JS
-      .then(() => {
-        dispatch({ type: SET_INTERVIEW, value: 
-          {
-            id: id,
-            interview: interview
-          } 
-        })
-      })
-    */
-    }
+  };
 
-    function deleteAppointment(id) {
-      return axios.delete(`/api/appointments/${id}`)
-    /* 
-      //ONLY USE THIS THEN FOR 2ND TEST IN APPLICATION.TEST.JS
-      .then(() => {
-        dispatch({ type: SET_INTERVIEW, value: 
-          {
-            id: id,
-            interview: null
-          } 
-        })
-      })
-    */  
-    };
-    return {state, setDay, bookInterview, deleteAppointment }
+  function deleteAppointment(id) {
+    return axios.delete(`/api/appointments/${id}`)
+  };
+
+  return {state, setDay, bookInterview, deleteAppointment }
 }
 

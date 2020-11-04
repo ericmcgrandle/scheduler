@@ -14,7 +14,6 @@ it("defaults to Monday and changes the schedule when a new day is selected", asy
   
   fireEvent.click(getByText("Tuesday"))
   expect(getByText("Leopold Silvers")).toBeInTheDocument();
-
 });
 
 it("loads data, books an interview and reduces the spots remaining for the first day by 1", async () => {
@@ -34,10 +33,19 @@ it("loads data, books an interview and reduces the spots remaining for the first
   /*
   THIS CODE COMPLETES THE TEST, BUT DOES NOT WORK WHILE USING WEBSOCKETS
   To use this code you must:
-    comment out -> dispatch statement in useEffect with websockets (approx. Lines 66-73 in useApplicationData.js)
-    uncomment -> then statement in bookInterview (approx. Lines 102-112 in useApplicationData.js)
-    uncomment -> then statement in deleteAppointment (approx. Lines 120-130 in useApplicationData.js)
-    uncomment the lines below
+    1) comment out -> dispatch statement in useEffect with websockets (approx. Lines 66-73 in useApplicationData.js)
+    2) Add THEN statement (below) to 'return axios.put(`/api/appointments/${id}`, { interview })' in bookInterview function in useApplicationData.js (approx. Lines 100 in useApplicationData.js)
+    3) Add THEN statement (below) to 'return axios.delete(`/api/appointments/${id}`)' in deleteAppointment function in useApplicationData.js (approx. Lines 105 in useApplicationData.js)
+    4) uncomment test lines below
+
+    .then(() => {
+        dispatch({ type: SET_INTERVIEW, value: 
+          {
+            id: id,
+            interview: null
+          } 
+        })
+      })
   */
 
   // fireEvent.click(getByAltText(appointment, "Sylvia Palmer"));
@@ -66,23 +74,34 @@ it("loads data, delete an interview and increase the spots remaining for the fir
   /*
   THIS CODE COMPLETES THE TEST, BUT DOES NOT WORK WHILE USING WEBSOCKETS
   To use this code you must:
-    comment out -> dispatch statement in useEffect with websockets (approx. Lines 66-73 in useApplicationData.js)
-    uncomment -> then statement in bookInterview (approx. Lines 102-112 in useApplicationData.js)
-    uncomment -> then statement in deleteAppointment (approx. Lines 120-130 in useApplicationData.js)
-    uncomment the lines below
+    1) comment out -> dispatch statement in useEffect with websockets (approx. Lines 66-73 in useApplicationData.js)
+    2) Add THEN statement (below) to 'return axios.put(`/api/appointments/${id}`, { interview })' in bookInterview function in useApplicationData.js (approx. Lines 100 in useApplicationData.js)
+    3) Add THEN statement (below) to 'return axios.delete(`/api/appointments/${id}`)' in deleteAppointment function in useApplicationData.js (approx. Lines 105 in useApplicationData.js)
+    4) uncomment test lines below
+
+    .then(() => {
+        dispatch({ type: SET_INTERVIEW, value: 
+          {
+            id: id,
+            interview: interview
+          } 
+        })
+      })
+
   */
-
-  // fireEvent.click(getByAltText(appointment, "Delete"));
-  // fireEvent.click(getByText(appointment, "Confirm"));
+  /*    
+  fireEvent.click(getByAltText(appointment, "Delete"));
+  fireEvent.click(getByText(appointment, "Confirm"));
   
-  // expect(getByText(appointment, "Deleting")).toBeInTheDocument();
+  expect(getByText(appointment, "Deleting")).toBeInTheDocument();
 
-  // await waitForElement(() => getByAltText(appointment, "Add"));
+  await waitForElement(() => getByAltText(appointment, "Add"));
 
-  // const day = getAllByTestId(container, "day").find(day =>
-  //   queryByText(day, "Monday")
-  // );  
-  // expect(getByText(day, "2 spots remaining")).toBeInTheDocument();
+  const day = getAllByTestId(container, "day").find(day =>
+    queryByText(day, "Monday")
+  );  
+  expect(getByText(day, "2 spots remaining")).toBeInTheDocument();
+  */
 });
 
 it("loads data, edits an interview and keeps the spots remaining for Monday the same", async () => {
@@ -105,23 +124,34 @@ it("loads data, edits an interview and keeps the spots remaining for Monday the 
   /*
   THIS CODE COMPLETES THE TEST, BUT DOES NOT WORK WHILE USING WEBSOCKETS
   To use this code you must:
-    comment out -> dispatch statement in useEffect with websockets (approx. Lines 66-73 in useApplicationData.js)
-    uncomment -> then statement in bookInterview (approx. Lines 102-112 in useApplicationData.js)
-    uncomment -> then statement in deleteAppointment (approx. Lines 120-130 in useApplicationData.js)
-    uncomment the lines below
+    1) comment out -> dispatch statement in useEffect with websockets (approx. Lines 66-73 in useApplicationData.js)
+    2) Add THEN statement (below) to 'return axios.put(`/api/appointments/${id}`, { interview })' in bookInterview function in useApplicationData.js (approx. Lines 100 in useApplicationData.js)
+    3) Add THEN statement (below) to 'return axios.delete(`/api/appointments/${id}`)' in deleteAppointment function in useApplicationData.js (approx. Lines 105 in useApplicationData.js)
+    4) uncomment test lines below
+
+    .then(() => {
+        dispatch({ type: SET_INTERVIEW, value: 
+          {
+            id: id,
+            interview: null
+          } 
+        })
+      })
   */
 
-  // fireEvent.click(getByAltText(appointment, "Sylvia Palmer"));
+  /*
+  fireEvent.click(getByAltText(appointment, "Sylvia Palmer"));
 
-  // fireEvent.click(getByText(appointment, "Save"));
-  // expect(getByText(appointment, "Saving")).toBeInTheDocument();
+  fireEvent.click(getByText(appointment, "Save"));
+  expect(getByText(appointment, "Saving")).toBeInTheDocument();
 
-  // await waitForElement(() => getByText(appointment, "Lydia Miller-Jones"));
+  await waitForElement(() => getByText(appointment, "Lydia Miller-Jones"));
 
-  // const day = getAllByTestId(container, "day").find(day =>
-  //   queryByText(day, "Monday")
-  // );  
-  // expect(getByText(day, "1 spot remaining")).toBeInTheDocument();
+  const day = getAllByTestId(container, "day").find(day =>
+    queryByText(day, "Monday")
+  );  
+  expect(getByText(day, "1 spot remaining")).toBeInTheDocument();
+  */
 });
 
 it("shows the save error when failing to save an appointment", async () => {

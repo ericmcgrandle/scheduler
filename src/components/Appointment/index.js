@@ -3,17 +3,16 @@ import React, { useEffect } from "react";
 //css
 import "components/Appointment/styles.scss";
 
-//js
+//components
 import Header from "components/Appointment/Header"
 import Show from "components/Appointment/Show"
 import Empty from "components/Appointment/Empty"
 import Form from "components/Appointment/Form"
 import Status from "components/Appointment/Status"
 import Err from "components/Appointment/Error"
-
+import Confirm from "components/Appointment/Confirm";
+//hooks
 import useVisualMode from "hooks/useVisualMode"
-import Confirm from "./Confirm";
-
 
 export default function Appointment(props) {
   //constants
@@ -24,10 +23,10 @@ export default function Appointment(props) {
   const CONFIRM = "CONFIRM";
   const DELETING = "DELETING";
   const EDIT = "EDIT";
-
   const ERROR_SAVE = "ERROR_SAVE";
   const ERROR_DELETE = "ERROR_DELETE";
 
+  //state
   const { mode, transition, back } = useVisualMode(
     props.interview ? SHOW : EMPTY
   );
@@ -68,6 +67,7 @@ export default function Appointment(props) {
     transition(EDIT)
   }
 
+  //Transitions
   useEffect(() => {
     if (props.interview && mode === EMPTY) {
      transition(SHOW);
@@ -141,5 +141,4 @@ export default function Appointment(props) {
     </article>
     
   )
-
 }
