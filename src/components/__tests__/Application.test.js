@@ -1,5 +1,6 @@
 import React from "react";
 import axios from "axios";
+import WS from 'jest-websocket-mock';
 
 import { render, cleanup, waitForElement, fireEvent, getByText, getAllByTestId, getByAltText, getByPlaceholderText, queryByText } from "@testing-library/react";
 
@@ -17,6 +18,7 @@ it("defaults to Monday and changes the schedule when a new day is selected", asy
 });
 
 it("loads data, books an interview and reduces the spots remaining for the first day by 1", async () => {
+  const server = new WS("ws://localhost:8001");
   const { container } = render(<Application />);
 
   await waitForElement(() => getByText(container, "Archie Cohen"))
@@ -30,39 +32,26 @@ it("loads data, books an interview and reduces the spots remaining for the first
     target: { value: "Lydia Miller-Jones" }
   });
 
-  /*
-  THIS CODE COMPLETES THE TEST, BUT DOES NOT WORK WHILE USING WEBSOCKETS
-  To use this code you must:
-    1) comment out -> dispatch statement in useEffect with websockets (approx. Lines 66-73 in useApplicationData.js)
-    2) Add THEN statement (below) to 'return axios.put(`/api/appointments/${id}`, { interview })' in bookInterview function in useApplicationData.js (approx. Lines 100 in useApplicationData.js)
-    3) Add THEN statement (below) to 'return axios.delete(`/api/appointments/${id}`)' in deleteAppointment function in useApplicationData.js (approx. Lines 105 in useApplicationData.js)
-    4) uncomment test lines below
+  fireEvent.click(getByAltText(appointment, "Sylvia Palmer"));
 
-    .then(() => {
-        dispatch({ type: SET_INTERVIEW, value: 
-          {
-            id: id,
-            interview: null
-          } 
-        })
-      })
-  */
+  fireEvent.click(getByText(appointment, "Save"));
+  expect(getByText(appointment, "Saving")).toBeInTheDocument();
 
-  // fireEvent.click(getByAltText(appointment, "Sylvia Palmer"));
+  //Mock server data
+  server.send(`{"type": "SET_INTERVIEW", "id": 1, "interview": {"interviewer": 1, "student": "Lydia Miller-Jones"}}`);
 
-  // fireEvent.click(getByText(appointment, "Save"));
-  // expect(getByText(appointment, "Saving")).toBeInTheDocument();
+  await waitForElement(() => getByText(appointment, "Lydia Miller-Jones"), {exact: false});
 
-  // await waitForElement(() => getByText(appointment, "Lydia Miller-Jones"));
+  const day = getAllByTestId(container, "day").find(day =>
+    queryByText(day, "Monday")
+  );  
+  expect(getByText(day, "no spots remaining")).toBeInTheDocument();
 
-  // const day = getAllByTestId(container, "day").find(day =>
-  //   queryByText(day, "Monday")
-  // );  
-  // expect(getByText(day, "no spots remaining")).toBeInTheDocument();
-  
+  server.close();
 });
 
 it("loads data, delete an interview and increase the spots remaining for the first day by 1", async () => {
+  const server = new WS("ws://localhost:8001");
   const { container } = render(<Application />);
 
   await waitForElement(() => getByText(container, "Archie Cohen"))
@@ -71,29 +60,14 @@ it("loads data, delete an interview and increase the spots remaining for the fir
     appointment => queryByText(appointment, "Archie Cohen")
   );
 
-  /*
-  THIS CODE COMPLETES THE TEST, BUT DOES NOT WORK WHILE USING WEBSOCKETS
-  To use this code you must:
-    1) comment out -> dispatch statement in useEffect with websockets (approx. Lines 66-73 in useApplicationData.js)
-    2) Add THEN statement (below) to 'return axios.put(`/api/appointments/${id}`, { interview })' in bookInterview function in useApplicationData.js (approx. Lines 100 in useApplicationData.js)
-    3) Add THEN statement (below) to 'return axios.delete(`/api/appointments/${id}`)' in deleteAppointment function in useApplicationData.js (approx. Lines 105 in useApplicationData.js)
-    4) uncomment test lines below
-
-    .then(() => {
-        dispatch({ type: SET_INTERVIEW, value: 
-          {
-            id: id,
-            interview: interview
-          } 
-        })
-      })
-
-  */
-  /*    
   fireEvent.click(getByAltText(appointment, "Delete"));
   fireEvent.click(getByText(appointment, "Confirm"));
   
   expect(getByText(appointment, "Deleting")).toBeInTheDocument();
+
+  //Mock server data
+  server.send(`{"type": "SET_INTERVIEW", "id": 2, "interview": null }`);
+
 
   await waitForElement(() => getByAltText(appointment, "Add"));
 
@@ -101,10 +75,12 @@ it("loads data, delete an interview and increase the spots remaining for the fir
     queryByText(day, "Monday")
   );  
   expect(getByText(day, "2 spots remaining")).toBeInTheDocument();
-  */
+
+  server.close();
 });
 
 it("loads data, edits an interview and keeps the spots remaining for Monday the same", async () => {
+  const server = new WS("ws://localhost:8001");
   const { container } = render(<Application />);
 
   await waitForElement(() => getByText(container, "Archie Cohen"))
@@ -121,37 +97,23 @@ it("loads data, edits an interview and keeps the spots remaining for Monday the 
     target: { value: "Lydia Miller-Jones" }
   });
 
-  /*
-  THIS CODE COMPLETES THE TEST, BUT DOES NOT WORK WHILE USING WEBSOCKETS
-  To use this code you must:
-    1) comment out -> dispatch statement in useEffect with websockets (approx. Lines 66-73 in useApplicationData.js)
-    2) Add THEN statement (below) to 'return axios.put(`/api/appointments/${id}`, { interview })' in bookInterview function in useApplicationData.js (approx. Lines 100 in useApplicationData.js)
-    3) Add THEN statement (below) to 'return axios.delete(`/api/appointments/${id}`)' in deleteAppointment function in useApplicationData.js (approx. Lines 105 in useApplicationData.js)
-    4) uncomment test lines below
-
-    .then(() => {
-        dispatch({ type: SET_INTERVIEW, value: 
-          {
-            id: id,
-            interview: null
-          } 
-        })
-      })
-  */
-
-  /*
+  
   fireEvent.click(getByAltText(appointment, "Sylvia Palmer"));
 
   fireEvent.click(getByText(appointment, "Save"));
   expect(getByText(appointment, "Saving")).toBeInTheDocument();
 
-  await waitForElement(() => getByText(appointment, "Lydia Miller-Jones"));
+  //Mock server data
+  server.send(`{"type": "SET_INTERVIEW", "id": 2, "interview": {"interviewer": 1, "student": "Lydia Miller-Jones"}}`);
+
+  await waitForElement(() => getByText(appointment, "Lydia Miller-Jones"), {exact: false});
 
   const day = getAllByTestId(container, "day").find(day =>
     queryByText(day, "Monday")
   );  
   expect(getByText(day, "1 spot remaining")).toBeInTheDocument();
-  */
+  
+  server.close();
 });
 
 it("shows the save error when failing to save an appointment", async () => {

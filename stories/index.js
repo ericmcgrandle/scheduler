@@ -22,9 +22,6 @@ import Status from "components/Appointment/Status";
 import Err from "components/Appointment/Error";
 import Form from "components/Appointment/Form";
 
-//functions
-import { bookInterview } from "hooks/useApplicationData";
-
 //BUTTON
 storiesOf("Button", module)
   .addParameters({
