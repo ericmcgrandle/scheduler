@@ -22,6 +22,9 @@ import Status from "components/Appointment/Status";
 import Err from "components/Appointment/Error";
 import Form from "components/Appointment/Form";
 
+//functions
+import { bookInterview } from "hooks/useApplicationData";
+
 //BUTTON
 storiesOf("Button", module)
   .addParameters({
@@ -160,16 +163,7 @@ storiesOf("Button", module)
     .add("Appointment with 2 slots", () => (
       <Fragment>
         <Appointment id={1} time="12pm" />
-        <Appointment id="last" time="1pm" />
-      </Fragment>
-    ))
-    .add("Appointment Booked", () => (
-      <Fragment>
-        <Appointment
-          id={1}
-          time="12pm"
-          interview={{ student: "Lydia Miller-Jones", interviewer }}
-        />
+        <Appointment id={2} time="1pm" />
         <Appointment id="last" time="1pm" />
       </Fragment>
     ))
@@ -186,7 +180,8 @@ storiesOf("Button", module)
     .add("Show", () => 
       <Show
         student="Lydia Miller-Jones"
-        interviewer={interviewers[0]}
+        interviewer="8"
+        interviewers={interviewers}
         onEdit={action("onEdit")}
         onDelete={action("onDelete")}
       />
