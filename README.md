@@ -2,6 +2,10 @@
 
 Interview Scheduler is a React based app that allows many clients to manage appointments throughout the week. 
 
+Data is persisted by the API server using a PostgresSQL database.
+
+Jest and Cypress tests are included.
+
 ## Application Is Live
 
 To view the live version of the application vist - https://loving-panini-03a52b.netlify.app/ - 
@@ -23,11 +27,21 @@ npm start
 npm test
 ```
 
+## Running Cypress Test Framework
+
+```sh
+npm run cypress
+```
+
 ## Running Storybook Visual Testbed
 
 ```sh
 npm run storybook
 ```
+
+## Extras
+
+This project includes support for websockets. 
 
 ## Final Product
 
